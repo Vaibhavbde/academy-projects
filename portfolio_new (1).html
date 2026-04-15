@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Portfolio Template 👨‍💻</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FAF7F2;
+  --warm:#F5EFE4;
+  --paper:#EDE6D9;
+  --ink:#1A1410;
+  --ink-light:#5C4F3D;
+  --ink-muted:#9C8E7B;
+  --rust:#C4622D;
+  --rust-light:#E8825040;
+  --rust-dim:#C4622D18;
+  --gold:#B8860B;
+  --teal:#2A7062;
+  --border:rgba(26,20,16,0.12);
+  --shadow:rgba(26,20,16,0.08);
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:400;overflow-x:hidden;line-height:1.6}
+h1,h2,h3,h4{font-family:'Playfair Display',serif}
+.mono{font-family:'DM Mono',monospace}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+button,input,textarea{font-family:'DM Sans',sans-serif}
+
+/* ──────── SCROLLBAR ──────── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--warm)}
+::-webkit-scrollbar-thumb{background:var(--rust);border-radius:2px}
+
+/* ──────── NAV ──────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:1rem 4rem;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(250,247,242,0.88);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  transition:all 0.3s
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;font-style:italic;font-size:1.3rem;
+  color:var(--ink);letter-spacing:-0.02em
+}
+.nav-logo em{color:var(--rust);font-style:normal}
+.nav-links{display:flex;gap:2.5rem;list-style:none;align-items:center}
+.nav-links a{
+  font-size:0.8rem;letter-spacing:0.06em;text-transform:uppercase;font-weight:500;
+  color:var(--ink-muted);position:relative;padding-bottom:2px;transition:color 0.3s
+}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:0;height:1.5px;background:var(--rust);transition:width 0.3s ease;border-radius:2px}
+.nav-links a:hover,.nav-links a.active{color:var(--rust)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-cta{
+  border:1.5px solid var(--rust);color:var(--rust);
+  padding:0.5rem 1.3rem;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:500;
+  background:transparent;transition:all 0.3s;border-radius:2px;cursor:pointer
+}
+.nav-cta:hover{background:var(--rust);color:#fff}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.ham span{display:block;width:22px;height:1.5px;background:var(--ink);transition:all 0.3s;border-radius:2px}
+.mob-nav{
+  position:fixed;inset:0;background:var(--cream);z-index:200;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3rem;
+  opacity:0;pointer-events:none;transition:opacity 0.4s
+}
+.mob-nav.open{opacity:1;pointer-events:all}
+.mob-nav a{font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--ink-muted);transition:color 0.3s}
+.mob-nav a:hover{color:var(--rust)}
+.mob-close{position:absolute;top:1.5rem;right:2rem;background:none;border:none;font-size:1.8rem;cursor:pointer;color:var(--ink)}
+
+/* ──────── HERO ──────── */
+#hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:1fr 1fr;
+  padding:0 4rem;padding-top:80px;
+  align-items:center;gap:4rem;
+  position:relative;overflow:hidden
+}
+.hero-bg-line{
+  position:absolute;top:0;bottom:0;left:50%;width:1px;
+  background:var(--border);pointer-events:none
+}
+.hero-dots{
+  position:absolute;right:0;top:50%;transform:translateY(-50%);
+  display:grid;grid-template-columns:repeat(6,1fr);gap:16px;
+  opacity:0.15;pointer-events:none;padding:2rem
+}
+.hero-dots span{width:4px;height:4px;border-radius:50%;background:var(--rust);display:block}
+.hero-left{z-index:2;padding:3rem 0}
+.tag-line{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--rust);letter-spacing:0.08em;
+  background:var(--rust-dim);border:1px solid rgba(196,98,45,0.2);
+  padding:0.35rem 0.9rem;margin-bottom:2rem;border-radius:2px
+}
+.hero-name{
+  font-size:clamp(3rem,6vw,5.5rem);line-height:1;font-weight:900;
+  margin-bottom:1.2rem;letter-spacing:-0.03em
+}
+.hero-name .line{overflow:hidden;display:block}
+.hero-name .inner{display:block;transform:translateY(110%);animation:slideUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards}
+.hero-name .line:nth-child(1) .inner{animation-delay:0.05s}
+.hero-name .line:nth-child(2) .inner{animation-delay:0.15s;color:var(--rust)}
+@keyframes slideUp{to{transform:translateY(0)}}
+.hero-role{
+  font-family:'DM Mono',monospace;font-size:0.9rem;color:var(--ink-muted);
+  margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem;
+  opacity:0;animation:fadeUp 0.7s ease 0.5s forwards
+}
+.role-sep{color:var(--rust)}
+.hero-bio{
+  font-size:1rem;color:var(--ink-light);line-height:1.9;max-width:460px;
+  margin-bottom:2.5rem;opacity:0;animation:fadeUp 0.7s ease 0.65s forwards
+}
+@keyframes fadeUp{to{opacity:1;transform:none}from{opacity:0;transform:translateY(12px)}}
+.hero-btns{display:flex;gap:1rem;margin-bottom:2.5rem;opacity:0;animation:fadeUp 0.7s ease 0.8s forwards;flex-wrap:wrap}
+.btn-primary{
+  background:var(--rust);color:#fff;padding:0.9rem 2.2rem;
+  font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:500;
+  border:1.5px solid var(--rust);transition:all 0.3s;border-radius:2px;display:inline-block;cursor:pointer
+}
+.btn-primary:hover{background:transparent;color:var(--rust)}
+.btn-outline{
+  border:1.5px solid var(--border);color:var(--ink);padding:0.9rem 2.2rem;
+  font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:500;
+  transition:all 0.3s;border-radius:2px;display:inline-block;cursor:pointer
+}
+.btn-outline:hover{border-color:var(--rust);color:var(--rust)}
+.hero-socials{display:flex;gap:0.8rem;opacity:0;animation:fadeUp 0.7s ease 0.95s forwards;flex-wrap:wrap}
+.s-link{
+  padding:0.5rem 1rem;border:1px solid var(--border);font-size:0.75rem;
+  font-family:'DM Mono',monospace;letter-spacing:0.05em;color:var(--ink-muted);
+  transition:all 0.3s;border-radius:2px
+}
+.s-link:hover{border-color:var(--rust);color:var(--rust);transform:translateY(-2px)}
+.hero-right{z-index:2;display:flex;align-items:center;justify-content:center}
+.portrait-wrap{position:relative;width:380px;max-width:100%}
+.portrait-frame{
+  width:100%;aspect-ratio:3/4;overflow:hidden;
+  clip-path:polygon(0 0,90% 0,100% 10%,100% 100%,0 100%);
+  position:relative
+}
+.portrait-frame img{width:100%;height:100%;object-fit:cover;filter:sepia(15%)}
+.portrait-accent{
+  position:absolute;top:-12px;right:-12px;width:80px;height:80px;
+  border:2px solid var(--rust);clip-path:polygon(0 0,90% 0,100% 10%,100% 100%,0 100%);
+  pointer-events:none
+}
+.portrait-label{
+  position:absolute;bottom:1.5rem;left:-1.5rem;
+  background:var(--rust);color:#fff;padding:0.6rem 1.2rem;
+  font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.06em;
+  white-space:nowrap;box-shadow:4px 4px 0 var(--ink)
+}
+.hero-stats{
+  display:flex;gap:2rem;margin-top:1.5rem;padding-top:1.5rem;
+  border-top:1px solid var(--border)
+}
+.stat-item{text-align:center}
+.stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--rust);line-height:1}
+.stat-label{font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-muted);margin-top:0.25rem}
+
+/* ──────── SECTION GENERIC ──────── */
+section{padding:7rem 4rem}
+.sec-label{
+  font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--rust);letter-spacing:0.15em;
+  text-transform:uppercase;margin-bottom:0.8rem;display:flex;align-items:center;gap:0.8rem
+}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.sec-title{font-size:clamp(2.2rem,4vw,3.2rem);font-weight:900;line-height:1.1;margin-bottom:2rem;letter-spacing:-0.02em}
+.sec-title em{font-style:italic;color:var(--rust)}
+
+/* ──────── ABOUT ──────── */
+#about{background:var(--warm)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.about-img-wrap{position:relative}
+.about-img{
+  width:100%;aspect-ratio:4/5;object-fit:cover;
+  clip-path:polygon(12% 0,100% 0,100% 88%,88% 100%,0 100%,0 12%);
+  filter:sepia(10%)
+}
+.about-corner-box{
+  position:absolute;bottom:-1.5rem;right:-1.5rem;
+  background:var(--cream);border:1px solid var(--border);
+  padding:1.5rem;max-width:200px;
+  box-shadow:6px 6px 0 var(--rust-light)
+}
+.about-corner-box strong{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--rust);display:block}
+.about-corner-box span{font-size:0.78rem;color:var(--ink-muted);letter-spacing:0.04em}
+.about-text p{font-size:1rem;color:var(--ink-light);line-height:1.9;margin-bottom:1.2rem}
+.about-tags{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:2rem}
+.about-tag{
+  padding:0.35rem 0.9rem;background:var(--cream);border:1px solid var(--border);
+  font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.04em;color:var(--ink-light);
+  border-radius:2px;transition:all 0.3s
+}
+.about-tag:hover{border-color:var(--rust);color:var(--rust)}
+
+/* ──────── SKILLS ──────── */
+#skills{background:var(--cream)}
+.skills-layout{display:grid;grid-template-columns:1fr 1.5fr;gap:5rem}
+.skills-bars{display:flex;flex-direction:column;gap:1.8rem}
+.skill-bar-item{}
+.skill-bar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem}
+.skill-bar-name{font-weight:500;font-size:0.9rem}
+.skill-bar-pct{font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--rust)}
+.skill-track{height:4px;background:var(--paper);border-radius:2px;overflow:hidden}
+.skill-fill{height:100%;background:linear-gradient(90deg,var(--rust),var(--gold));border-radius:2px;width:0;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
+.tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.tech-card{
+  padding:1.2rem;background:var(--warm);border:1px solid var(--border);
+  text-align:center;transition:all 0.3s;border-radius:3px;cursor:default
+}
+.tech-card:hover{border-color:var(--rust);transform:translateY(-4px);box-shadow:0 8px 24px var(--shadow)}
+.tech-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.tech-name{font-size:0.78rem;font-weight:500;letter-spacing:0.04em}
+.tech-lvl{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--ink-muted);margin-top:0.2rem}
+
+/* ──────── PROJECTS ──────── */
+#projects{background:var(--warm)}
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.proj-card{
+  background:var(--cream);border:1px solid var(--border);
+  overflow:hidden;transition:all 0.4s;position:relative;border-radius:3px
+}
+.proj-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px var(--shadow)}
+.proj-img{width:100%;aspect-ratio:16/10;overflow:hidden}
+.proj-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;filter:sepia(10%)}
+.proj-card:hover .proj-img img{transform:scale(1.06)}
+.proj-body{padding:1.5rem}
+.proj-num{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--rust);margin-bottom:0.5rem}
+.proj-title{font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;letter-spacing:-0.01em}
+.proj-desc{font-size:0.85rem;color:var(--ink-muted);line-height:1.7;margin-bottom:1.2rem}
+.proj-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.2rem}
+.proj-tag{
+  font-family:'DM Mono',monospace;font-size:0.68rem;padding:0.25rem 0.6rem;
+  background:var(--rust-dim);color:var(--rust);border-radius:2px;letter-spacing:0.04em
+}
+.proj-links{display:flex;gap:0.8rem}
+.proj-link{
+  font-size:0.75rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--ink);border-bottom:1px solid var(--border);padding-bottom:1px;
+  transition:all 0.3s
+}
+.proj-link:hover{color:var(--rust);border-color:var(--rust)}
+
+/* ──────── EXPERIENCE TIMELINE ──────── */
+#experience{background:var(--cream)}
+.timeline{position:relative;margin-top:3rem;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)}
+.tl-entry{position:relative;padding:0 0 3.5rem 2.5rem;opacity:0;transform:translateX(-20px);transition:all 0.6s ease}
+.tl-entry.visible{opacity:1;transform:translateX(0)}
+.tl-dot{
+  position:absolute;left:-2.5rem;top:0.25rem;
+  width:12px;height:12px;background:var(--cream);border:2px solid var(--rust);
+  border-radius:50%;transform:translateX(50%)
+}
+.tl-dot.edu{border-color:var(--teal)}
+.tl-type{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--rust);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.3rem}
+.tl-type.edu{color:var(--teal)}
+.tl-role{font-size:1.2rem;font-weight:700;margin-bottom:0.25rem;letter-spacing:-0.01em}
+.tl-org{font-size:0.9rem;color:var(--ink-light);margin-bottom:0.2rem}
+.tl-date{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--ink-muted);margin-bottom:1rem}
+.tl-list{list-style:none;margin-bottom:1rem}
+.tl-list li{font-size:0.88rem;color:var(--ink-light);line-height:1.8;padding-left:1.2rem;position:relative}
+.tl-list li::before{content:'→';position:absolute;left:0;color:var(--rust);font-size:0.7rem;top:0.15rem}
+.tl-chips{display:flex;flex-wrap:wrap;gap:0.4rem}
+.tl-chip{font-family:'DM Mono',monospace;font-size:0.68rem;padding:0.2rem 0.6rem;background:var(--paper);color:var(--ink-muted);border-radius:2px}
+
+/* ──────── CERTIFICATIONS ──────── */
+#certifications{background:var(--warm)}
+.certs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
+.cert-card{
+  padding:1.5rem;background:var(--cream);border:1px solid var(--border);
+  border-left:3px solid var(--rust);transition:all 0.3s;border-radius:0 3px 3px 0
+}
+.cert-card:hover{transform:translateX(4px);box-shadow:4px 0 0 var(--rust)}
+.cert-issuer{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem}
+.cert-name{font-size:0.95rem;font-weight:700;margin-bottom:0.3rem;line-height:1.4}
+.cert-date{font-size:0.78rem;color:var(--ink-muted);font-family:'DM Mono',monospace;margin-bottom:0.8rem}
+.cert-verify{font-size:0.75rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--rust);transition:gap 0.3s;display:inline-flex;align-items:center;gap:0.3rem}
+.cert-verify:hover{gap:0.6rem}
+
+/* ──────── TESTIMONIALS ──────── */
+#testimonials{background:var(--cream)}
+.testimonials-inner{margin-top:3rem;position:relative;overflow:hidden}
+.testi-track{display:flex;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1)}
+.testi-slide{min-width:100%;padding:3rem;background:var(--warm);border:1px solid var(--border);border-radius:3px}
+.testi-quote{font-family:'Playfair Display',serif;font-size:1.4rem;font-style:italic;line-height:1.6;color:var(--ink);margin-bottom:2rem;position:relative;padding-left:2rem}
+.testi-quote::before{content:'"';position:absolute;left:0;top:-0.2rem;font-size:3rem;line-height:1;color:var(--rust);font-style:normal;opacity:0.4}
+.testi-author{display:flex;align-items:center;gap:1rem}
+.testi-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--border)}
+.testi-name{font-weight:600;font-size:0.95rem}
+.testi-role{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--ink-muted)}
+.testi-controls{display:flex;gap:0.8rem;margin-top:1.5rem;align-items:center}
+.testi-dot{width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;transition:all 0.3s;border:none}
+.testi-dot.active{background:var(--rust);width:24px;border-radius:4px}
+.testi-nav{background:none;border:1.5px solid var(--border);width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;margin-left:auto;border-radius:2px;color:var(--ink)}
+.testi-nav:hover{border-color:var(--rust);color:var(--rust)}
+
+/* ──────── CONTACT ──────── */
+#contact{background:var(--ink);color:#fff}
+#contact .sec-label{color:var(--rust)}
+#contact .sec-label::after{background:rgba(255,255,255,0.1)}
+#contact .sec-title em{color:var(--rust)}
+#contact .sec-title{color:#fff}
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;margin-top:3rem}
+.contact-info{padding-top:1rem}
+.contact-intro{font-size:1rem;color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:2.5rem}
+.contact-item{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.8rem}
+.contact-icon{
+  width:44px;height:44px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;border-radius:3px
+}
+.contact-detail-label{font-family:'DM Mono',monospace;font-size:0.7rem;color:rgba(255,255,255,0.4);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.25rem}
+.contact-detail-val{font-size:0.95rem;color:rgba(255,255,255,0.85)}
+.contact-detail-val a:hover{color:var(--rust)}
+.contact-form{display:flex;flex-direction:column;gap:1.2rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.form-group{display:flex;flex-direction:column;gap:0.4rem}
+.form-label{font-family:'DM Mono',monospace;font-size:0.72rem;color:rgba(255,255,255,0.5);letter-spacing:0.08em;text-transform:uppercase}
+.form-input{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  padding:0.85rem 1rem;color:#fff;font-size:0.9rem;
+  transition:border-color 0.3s;border-radius:3px;outline:none;width:100%
+}
+.form-input:focus{border-color:var(--rust)}
+.form-input::placeholder{color:rgba(255,255,255,0.25)}
+textarea.form-input{resize:vertical;min-height:130px}
+.form-footer{display:flex;align-items:center;justify-content:space-between}
+.char-count{font-family:'DM Mono',monospace;font-size:0.72rem;color:rgba(255,255,255,0.3)}
+.btn-send{
+  background:var(--rust);color:#fff;padding:0.9rem 2.5rem;
+  font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:500;
+  border:1.5px solid var(--rust);transition:all 0.3s;border-radius:3px;cursor:pointer
+}
+.btn-send:hover{background:transparent;color:var(--rust)}
+.form-success{
+  display:none;margin-top:1rem;padding:1rem 1.2rem;
+  background:rgba(42,112,98,0.15);border:1px solid rgba(42,112,98,0.4);
+  color:#6fcbb9;font-family:'DM Mono',monospace;font-size:0.82rem;letter-spacing:0.04em;border-radius:3px
+}
+.form-success.show{display:block}
+
+/* ──────── FOOTER ──────── */
+footer{
+  background:var(--ink);border-top:1px solid rgba(255,255,255,0.08);
+  padding:2.5rem 4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem
+}
+.footer-copy{font-family:'DM Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.35);letter-spacing:0.04em}
+.footer-name{font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,0.6)}
+.footer-socials{display:flex;gap:1rem}
+.footer-soc{
+  width:36px;height:36px;border:1px solid rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:0.68rem;color:rgba(255,255,255,0.4);
+  transition:all 0.3s;letter-spacing:0.04em;border-radius:2px;text-transform:uppercase
+}
+.footer-soc:hover{border-color:var(--rust);color:var(--rust)}
+
+/* ──────── BACK TO TOP ──────── */
+#back-top{
+  position:fixed;bottom:2rem;right:2rem;
+  width:44px;height:44px;background:var(--rust);color:#fff;
+  border:none;font-size:1.2rem;cursor:pointer;z-index:99;
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:all 0.3s;border-radius:3px
+}
+#back-top.show{opacity:1;transform:translateY(0);pointer-events:all}
+#back-top:hover{background:var(--ink);transform:translateY(-3px)}
+
+/* ──────── REVEAL ANIMATIONS ──────── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-24px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+
+/* ──────── RESPONSIVE ──────── */
+@media(max-width:1024px){
+  #hero{grid-template-columns:1fr;padding:5rem 2.5rem 3rem;gap:3rem;text-align:center}
+  .hero-right{justify-content:center}
+  .portrait-wrap{width:280px}
+  .hero-btns,.hero-socials{justify-content:center}
+  .hero-bio{margin:0 auto 2.5rem}
+  .about-grid,.skills-layout,.contact-grid{grid-template-columns:1fr;gap:3rem}
+  .projects-grid{grid-template-columns:1fr 1fr}
+  .certs-grid{grid-template-columns:1fr 1fr}
+  section{padding:5rem 2.5rem}
+  nav{padding:1rem 2rem}
+  footer{padding:2rem;flex-direction:column;align-items:center;text-align:center}
+  .about-corner-box{right:-0.5rem;bottom:-0.5rem}
+}
+@media(max-width:640px){
+  .nav-links,.nav-cta{display:none}
+  .ham{display:flex}
+  #hero{padding:4.5rem 1.5rem 2rem}
+  section{padding:4rem 1.5rem}
+  .projects-grid,.certs-grid,.tech-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .hero-stats{flex-wrap:wrap;gap:1.5rem}
+  .testi-slide{padding:1.5rem}
+  nav{padding:1rem 1.5rem}
+  footer{padding:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="mainNav">
+  <a href="#hero" class="nav-logo">Your<em>Name</em></a>
+  <ul class="nav-links">
+    <li><a href="#about" class="nav-link">About</a></li>
+    <li><a href="#skills" class="nav-link">Skills</a></li>
+    <li><a href="#projects" class="nav-link">Projects</a></li>
+    <li><a href="#experience" class="nav-link">Experience</a></li>
+    <li><a href="#certifications" class="nav-link">Certs</a></li>
+    <li><a href="#contact" class="nav-link">Contact</a></li>
+  </ul>
+  <a href="https://www.w3.org/WAI/WCAG21/Techniques/pdf/pdf-sample.pdf" target="_blank" rel="noopener noreferrer" class="nav-cta">Resume ↗</a>
+  <button class="ham" id="hamBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" id="mobClose">✕</button>
+  <a href="#about" class="mob-link">About</a>
+  <a href="#skills" class="mob-link">Skills</a>
+  <a href="#projects" class="mob-link">Projects</a>
+  <a href="#experience" class="mob-link">Experience</a>
+  <a href="#certifications" class="mob-link">Certifications</a>
+  <a href="#contact" class="mob-link">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-line"></div>
+  <div class="hero-dots">
+    <!-- dots generated by JS -->
+  </div>
+  <div class="hero-left">
+    <div class="tag-line">
+      <span style="width:8px;height:8px;background:var(--rust);border-radius:50%;animation:pulse2 2s ease infinite"></span>
+      Available for Work
+    </div>
+    <h1 class="hero-name">
+      <span class="line"><span class="inner">Your Full</span></span>
+      <span class="line"><span class="inner">Name Here</span></span>
+    </h1>
+    <p class="hero-role mono">
+      <span class="role-sep">$</span>&nbsp;
+      <span id="typeRole">Frontend Developer</span>
+      <span class="cursor-blink">|</span>
+    </p>
+    <p class="hero-bio">
+      A passionate developer crafting thoughtful digital experiences. I blend clean code with considered design to build products that are both functional and beautiful.
+    </p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">Hire Me →</a>
+      <a href="https://www.w3.org/WAI/WCAG21/Techniques/pdf/pdf-sample.pdf" target="_blank" rel="noopener noreferrer" class="btn-outline">Download CV</a>
+    </div>
+    <div class="hero-socials">
+      <a href="#" class="s-link">GitHub</a>
+      <a href="#" class="s-link">LinkedIn</a>
+      <a href="#" class="s-link">Twitter</a>
+      <a href="#" class="s-link">Dribbble</a>
+    </div>
+    <div class="hero-stats" style="margin-top:2rem">
+      <div class="stat-item"><div class="stat-num">3+</div><div class="stat-label">Years Exp.</div></div>
+      <div class="stat-item"><div class="stat-num">20+</div><div class="stat-label">Projects</div></div>
+      <div class="stat-item"><div class="stat-num">10+</div><div class="stat-label">Clients</div></div>
+      <div class="stat-item"><div class="stat-num">5★</div><div class="stat-label">Rating</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="portrait-wrap">
+      <div class="portrait-frame">
+        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80" alt="Your Name — Developer">
+      </div>
+      <div class="portrait-accent"></div>
+      <div class="portrait-label">Your Name · Developer</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-label">01 — About</div>
+  <div class="about-grid">
+    <div class="about-img-wrap reveal-left">
+      <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=700&q=80" alt="Working" class="about-img">
+      <div class="about-corner-box">
+        <strong>3+ yrs</strong>
+        <span>of professional development</span>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <h2 class="sec-title">Building things that <em>matter</em></h2>
+      <p>Hi, I'm <strong>Your Full Name</strong> — a frontend developer and UI/UX enthusiast based in [City, Country]. I specialize in building performant, accessible web applications with a sharp eye for design.</p>
+      <p>When I'm not coding, you'll find me exploring open-source projects, contributing to developer communities, or sketching interface ideas over coffee. I believe great software is equal parts engineering and empathy.</p>
+      <p>Currently open to full-time roles, freelance contracts, and exciting collaborations. Let's build something worthwhile together.</p>
+      <div class="about-tags">
+        <span class="about-tag">React</span>
+        <span class="about-tag">TypeScript</span>
+        <span class="about-tag">Node.js</span>
+        <span class="about-tag">UI/UX Design</span>
+        <span class="about-tag">Open Source</span>
+        <span class="about-tag">Agile / Scrum</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-label">02 — Skills</div>
+  <h2 class="sec-title reveal">My <em>toolkit</em></h2>
+  <div class="skills-layout">
+    <div class="skills-bars reveal" id="skillBars"></div>
+    <div class="tech-grid reveal" id="techGrid"></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sec-label">03 — Projects</div>
+  <h2 class="sec-title reveal">Selected <em>work</em></h2>
+  <div class="projects-grid" id="projectsGrid"></div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sec-label">04 — Experience</div>
+  <h2 class="sec-title reveal">Where I've <em>been</em></h2>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="sec-label">05 — Certifications</div>
+  <h2 class="sec-title reveal">Credentials &amp; <em>badges</em></h2>
+  <div class="certs-grid" id="certsGrid"></div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="sec-label">06 — Testimonials</div>
+  <h2 class="sec-title reveal">What people <em>say</em></h2>
+  <div class="testimonials-inner reveal" id="testiSlider">
+    <div class="testi-track" id="testiTrack"></div>
+    <div class="testi-controls" id="testiControls">
+      <div id="testiDots" style="display:flex;gap:0.6rem"></div>
+      <button class="testi-nav" id="testiPrev">←</button>
+      <button class="testi-nav" id="testiNext">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-label">07 — Contact</div>
+  <h2 class="sec-title reveal">Let's <em>talk</em></h2>
+  <div class="contact-grid">
+    <div class="contact-info reveal-left">
+      <p class="contact-intro">I'm always open to interesting conversations, new opportunities, and creative collaborations. Drop me a line — I reply within 24 hours.</p>
+      <div class="contact-item">
+        <div class="contact-icon">✉</div>
+        <div>
+          <div class="contact-detail-label">Email</div>
+          <div class="contact-detail-val"><a href="mailto:hello@yourname.dev">hello@yourname.dev</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">💼</div>
+        <div>
+          <div class="contact-detail-label">LinkedIn</div>
+          <div class="contact-detail-val"><a href="#">linkedin.com/in/yourname</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🌍</div>
+        <div>
+          <div class="contact-detail-label">Based in</div>
+          <div class="contact-detail-val">Mumbai, India</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">⏱</div>
+        <div>
+          <div class="contact-detail-label">Availability</div>
+          <div class="contact-detail-val">Open to full-time & freelance</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fname">Full Name</label>
+            <input type="text" id="fname" class="form-input" placeholder="Jane Smith" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="femail">Email</label>
+            <input type="email" id="femail" class="form-input" placeholder="jane@example.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fsubject">Subject</label>
+          <input type="text" id="fsubject" class="form-input" placeholder="Project Inquiry">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="fmsg">Message</label>
+          <textarea id="fmsg" class="form-input" maxlength="500" placeholder="Tell me about your project..."></textarea>
+        </div>
+        <div class="form-footer">
+          <span class="char-count" id="charCount">0 / 500</span>
+          <button type="submit" class="btn-send">Send Message →</button>
+        </div>
+        <div class="form-success" id="formSuccess">✓ Message sent! I'll get back to you soon.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-name">YourName.</span>
+  <span class="footer-copy">© 2025 — Designed & built with ♥</span>
+  <div class="footer-socials">
+    <a href="#" class="footer-soc">GH</a>
+    <a href="#" class="footer-soc">LI</a>
+    <a href="#" class="footer-soc">TW</a>
+    <a href="#" class="footer-soc">DR</a>
+  </div>
+</footer>
+
+<button id="back-top" aria-label="Back to top">↑</button>
+
+<style>
+@keyframes pulse2{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:0.6}}
+.cursor-blink{display:inline-block;width:2px;height:1em;background:var(--rust);animation:blink 1s step-end infinite;vertical-align:middle;margin-left:2px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+</style>
+
+<script>
+// ── HERO DOTS ──
+const dotsWrap = document.querySelector('.hero-dots');
+for(let i=0;i<18;i++){const s=document.createElement('span');dotsWrap.appendChild(s);}
+
+// ── HAMBURGER ──
+const hamBtn=document.getElementById('hamBtn');
+const mobNav=document.getElementById('mobNav');
+const mobClose=document.getElementById('mobClose');
+hamBtn.addEventListener('click',()=>mobNav.classList.add('open'));
+mobClose.addEventListener('click',()=>mobNav.classList.remove('open'));
+document.querySelectorAll('.mob-link').forEach(l=>l.addEventListener('click',()=>mobNav.classList.remove('open')));
+
+// ── TYPEWRITER ROLE ──
+const roles=['Frontend Developer','UI/UX Enthusiast','React Specialist','Full Stack Builder','Open Source Contributor'];
+let ri=0,ci=0,deleting=false;
+const roleEl=document.getElementById('typeRole');
+function typeRole(){
+  const word=roles[ri];
+  if(!deleting){
+    roleEl.textContent=word.slice(0,++ci);
+    if(ci===word.length){deleting=true;setTimeout(typeRole,1800);return}
+  }else{
+    roleEl.textContent=word.slice(0,--ci);
+    if(ci===0){deleting=false;ri=(ri+1)%roles.length}
+  }
+  setTimeout(typeRole,deleting?60:90);
+}
+setTimeout(typeRole,1200);
+
+// ── SKILL BARS ──
+const skills=[
+  {name:'React / Next.js',pct:90},
+  {name:'TypeScript',pct:85},
+  {name:'Node.js / Express',pct:78},
+  {name:'UI/UX Design',pct:72},
+  {name:'Python / Django',pct:65},
+  {name:'DevOps / AWS',pct:55},
+];
+const barsWrap=document.getElementById('skillBars');
+skills.forEach(s=>{
+  barsWrap.innerHTML+=`<div class="skill-bar-item">
+    <div class="skill-bar-head"><span class="skill-bar-name">${s.name}</span><span class="skill-bar-pct">${s.pct}%</span></div>
+    <div class="skill-track"><div class="skill-fill" data-pct="${s.pct}"></div></div>
+  </div>`;
+});
+
+// ── TECH ICONS ──
+const techs=[
+  {icon:'⚛️',name:'React',lvl:'Expert'},
+  {icon:'🟦',name:'TypeScript',lvl:'Advanced'},
+  {icon:'🟩',name:'Node.js',lvl:'Advanced'},
+  {icon:'🎨',name:'Figma',lvl:'Intermediate'},
+  {icon:'🐍',name:'Python',lvl:'Intermediate'},
+  {icon:'☁️',name:'AWS',lvl:'Beginner'},
+  {icon:'🐳',name:'Docker',lvl:'Intermediate'},
+  {icon:'🔥',name:'Firebase',lvl:'Advanced'},
+  {icon:'🗄️',name:'MongoDB',lvl:'Advanced'},
+];
+const techWrap=document.getElementById('techGrid');
+techs.forEach(t=>{
+  techWrap.innerHTML+=`<div class="tech-card"><div class="tech-icon">${t.icon}</div><div class="tech-name">${t.name}</div><div class="tech-lvl mono">${t.lvl}</div></div>`;
+});
+
+// ── PROJECTS ──
+const projects=[
+  {num:'01',title:'E-Commerce Platform',desc:'A full-stack shopping platform with real-time inventory, payments via Stripe, and an admin dashboard.',tags:['React','Node.js','MongoDB'],img:'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80',gh:'#',live:'#'},
+  {num:'02',title:'Design System UI Kit',desc:'A comprehensive component library with 60+ accessible components, Storybook docs, and Figma plugin.',tags:['TypeScript','Storybook','CSS'],img:'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80',gh:'#',live:'#'},
+  {num:'03',title:'Analytics Dashboard',desc:'Real-time data visualization dashboard for SaaS metrics with customizable charts and CSV export.',tags:['Next.js','D3.js','PostgreSQL'],img:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',gh:'#',live:'#'},
+  {num:'04',title:'Social Media App',desc:'A community platform featuring feeds, direct messaging, and AI-powered content recommendations.',tags:['React Native','GraphQL','Redis'],img:'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&q=80',gh:'#',live:'#'},
+  {num:'05',title:'Task Management Tool',desc:'Kanban-style project manager with drag-and-drop, team collaboration, and Slack integration.',tags:['Vue.js','Firebase','Tailwind'],img:'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&q=80',gh:'#',live:'#'},
+  {num:'06',title:'AI Content Writer',desc:'A writing assistant powered by Claude API with prompt templates, history, and export options.',tags:['Next.js','Anthropic API','Supabase'],img:'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80',gh:'#',live:'#'},
+];
+const projGrid=document.getElementById('projectsGrid');
+projects.forEach(p=>{
+  const d=document.createElement('div');
+  d.className='proj-card reveal';
+  d.innerHTML=`<div class="proj-img"><img src="${p.img}" alt="${p.title}" loading="lazy"></div>
+    <div class="proj-body">
+      <p class="proj-num mono">${p.num}</p>
+      <h3 class="proj-title">${p.title}</h3>
+      <p class="proj-desc">${p.desc}</p>
+      <div class="proj-tags">${p.tags.map(t=>`<span class="proj-tag">${t}</span>`).join('')}</div>
+      <div class="proj-links">
+        <a href="${p.gh}" class="proj-link">GitHub ↗</a>
+        <a href="${p.live}" class="proj-link">Live Demo ↗</a>
+      </div>
+    </div>`;
+  projGrid.appendChild(d);
+});
+
+// ── TIMELINE ──
+const timeline=[
+  {type:'Work',role:'Senior Frontend Developer',org:'TechCorp Inc.',dates:'Jan 2023 – Present',bullets:['Led migration of legacy jQuery codebase to React 18 + TypeScript','Built component library used across 4 product teams','Improved Lighthouse score from 62 → 94'],chips:['React','TypeScript','Figma']},
+  {type:'Work',role:'Frontend Developer',org:'StartupXYZ',dates:'Jun 2021 – Dec 2022',bullets:['Developed customer-facing dashboard serving 50k+ users','Integrated REST & GraphQL APIs with efficient caching','Collaborated on sprint planning and code reviews'],chips:['Vue.js','GraphQL','AWS']},
+  {type:'Internship',role:'Junior Web Developer',org:'Digital Agency Co.',dates:'Jan 2021 – May 2021',bullets:['Built responsive landing pages for 8 client campaigns','Introduced ESLint + Prettier to team workflow','Reduced build times by 40% with Webpack optimizations'],chips:['HTML/CSS','JS','Webpack']},
+  {type:'Education',role:'B.Tech Computer Science',org:'Your University Name',dates:'2017 – 2021',bullets:['Graduated with First Class Distinction','Final year project: Distributed task scheduler','Won college hackathon 2019 & 2020'],chips:['Data Structures','OS','Networks']},
+];
+const tl=document.getElementById('timeline');
+timeline.forEach(e=>{
+  const d=document.createElement('div');
+  d.className='tl-entry';
+  const isEdu=e.type==='Education';
+  d.innerHTML=`<div class="tl-dot${isEdu?' edu':''}"></div>
+    <p class="tl-type${isEdu?' edu':''}">${e.type}</p>
+    <h3 class="tl-role">${e.role}</h3>
+    <p class="tl-org">${e.org}</p>
+    <p class="tl-date mono">${e.dates}</p>
+    <ul class="tl-list">${e.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>
+    <div class="tl-chips">${e.chips.map(c=>`<span class="tl-chip">${c}</span>`).join('')}</div>`;
+  tl.appendChild(d);
+});
+
+// ── CERTS ──
+const certs=[
+  {issuer:'AWS',name:'AWS Solutions Architect Professional',date:'Mar 2024',color:'#C4622D'},
+  {issuer:'Google',name:'Google Cloud Professional Developer',date:'Jan 2024',color:'#2A7062'},
+  {issuer:'Meta',name:'Meta Frontend Developer Certificate',date:'Nov 2023',color:'#B8860B'},
+  {issuer:'MongoDB',name:'MongoDB Certified Developer Associate',date:'Aug 2023',color:'#2A7062'},
+  {issuer:'Figma',name:'Figma Certified Professional',date:'Jun 2023',color:'#C4622D'},
+  {issuer:'Linux Foundation',name:'Certified Kubernetes Administrator',date:'Apr 2023',color:'#B8860B'},
+];
+const certsG=document.getElementById('certsGrid');
+certs.forEach(c=>{
+  const d=document.createElement('div');
+  d.className='cert-card reveal';
+  d.style.borderLeftColor=c.color;
+  d.innerHTML=`<p class="cert-issuer mono" style="color:${c.color}">${c.issuer}</p>
+    <h3 class="cert-name">${c.name}</h3>
+    <p class="cert-date">${c.date}</p>
+    <a href="#" class="cert-verify" style="color:${c.color}">Verify →</a>`;
+  certsG.appendChild(d);
+});
+
+// ── TESTIMONIALS ──
+const testis=[
+  {quote:"Your Name is one of the most thoughtful engineers I've worked with. They think deeply about user experience and long-term code maintainability. An absolute pleasure to build with.",avatar:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80',name:'Sarah Kim',role:'VP Engineering @ Stripe'},
+  {quote:"We hired Your Name to rebuild our design system and the result exceeded every expectation. Clean, thorough documentation and genuinely great code. Would absolutely work with again.",avatar:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80',name:'Marcus Reid',role:'CTO @ Prismatic'},
+  {quote:"A rare ability to translate complex technical constraints into beautiful, intuitive interfaces. The kind of developer who makes designers feel heard and clients feel understood.",avatar:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80',name:'Priya Sharma',role:'Lead Designer @ Figma'},
+];
+const track=document.getElementById('testiTrack');
+const dotsEl=document.getElementById('testiDots');
+let cur=0,auto;
+testis.forEach((t,i)=>{
+  const s=document.createElement('div');s.className='testi-slide';
+  s.innerHTML=`<p class="testi-quote">${t.quote}</p>
+    <div class="testi-author"><img class="testi-avatar" src="${t.avatar}" alt="${t.name}">
+    <div><p class="testi-name">${t.name}</p><p class="testi-role mono">${t.role}</p></div></div>`;
+  track.appendChild(s);
+  const dot=document.createElement('button');dot.className='testi-dot'+(i===0?' active':'');
+  dot.addEventListener('click',()=>goTo(i));dotsEl.appendChild(dot);
+});
+const goTo=idx=>{
+  cur=idx;track.style.transform=`translateX(-${idx*100}%)`;
+  document.querySelectorAll('.testi-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+};
+const startAuto=()=>{auto=setInterval(()=>goTo((cur+1)%testis.length),4500)};
+startAuto();
+document.getElementById('testiSlider').addEventListener('mouseenter',()=>clearInterval(auto));
+document.getElementById('testiSlider').addEventListener('mouseleave',startAuto);
+document.getElementById('testiNext').addEventListener('click',()=>goTo((cur+1)%testis.length));
+document.getElementById('testiPrev').addEventListener('click',()=>goTo((cur-1+testis.length)%testis.length));
+
+// ── CONTACT FORM ──
+document.getElementById('fmsg').addEventListener('input',function(){
+  document.getElementById('charCount').textContent=this.value.length+' / 500';
+});
+document.getElementById('contactForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const n=document.getElementById('fname').value.trim();
+  const em=document.getElementById('femail').value.trim();
+  const m=document.getElementById('fmsg').value.trim();
+  if(!n||!em||!m||!/\S+@\S+\.\S+/.test(em))return;
+  document.getElementById('formSuccess').classList.add('show');
+  this.reset();document.getElementById('charCount').textContent='0 / 500';
+  setTimeout(()=>document.getElementById('formSuccess').classList.remove('show'),5000);
+});
+
+// ── BACK TO TOP ──
+const bt=document.getElementById('back-top');
+window.addEventListener('scroll',()=>bt.classList.toggle('show',scrollY>400),{passive:true});
+bt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+// ── INTERSECTION OBSERVER ──
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-left,.tl-entry').forEach(el=>obs.observe(el));
+
+// ── SKILL BAR TRIGGER ──
+const barObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.skill-fill').forEach(f=>{f.style.width=f.dataset.pct+'%'});
+      barObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.3});
+barObs.observe(document.getElementById('skillBars'));
+
+// ── SCROLL SPY ──
+const secEls=document.querySelectorAll('section[id]');
+const navLks=document.querySelectorAll('.nav-link');
+const spy=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting)navLks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id));
+  });
+},{threshold:0.35,rootMargin:'-80px 0px -40% 0px'});
+secEls.forEach(s=>spy.observe(s));
+</script>
+</body>
+</html>
